@@ -3,11 +3,9 @@ package br.com.gsolutions.productapi.entities;
 import br.com.gsolutions.productapi.dto.CategoryDTO;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 
 
 @Entity
@@ -23,8 +21,24 @@ public class Category implements Serializable {
 
     private String name;
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant createdAt;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant updatedAt;
+
     public Category(CategoryDTO dto) {
         this.id = dto.getId();
         this.name = dto.getName();
+    }
+
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+        this.updatedAt = Instant.now();
     }
 }
