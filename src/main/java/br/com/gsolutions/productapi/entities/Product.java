@@ -21,7 +21,7 @@ public class Product implements Serializable {
 
     private String name;
 
-    @Column(length = 5000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private Double price;
