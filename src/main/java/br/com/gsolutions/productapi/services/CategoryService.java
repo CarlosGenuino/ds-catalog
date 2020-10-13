@@ -29,8 +29,10 @@ public class CategoryService {
         return repository.findByName(name);
     }
 
-    public Category create(Category category){
-        return repository.save(category);
+    @Transactional
+    public CategoryDTO create(CategoryDTO category){
+        Category savedCategory =  repository.save(new Category(category));
+        return new CategoryDTO(savedCategory);
     }
 
     @Transactional(readOnly = true)
