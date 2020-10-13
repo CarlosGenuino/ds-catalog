@@ -1,9 +1,9 @@
 package br.com.gsolutions.productapi.services.exceptions;
 
-public class EntityNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException{
     public static final long serialVersionID=1L;
 
-    public EntityNotFoundException(String message){
+    public ResourceNotFoundException(String message){
         super(message);
     }
 }

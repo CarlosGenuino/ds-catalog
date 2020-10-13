@@ -13,17 +13,17 @@ import lombok.Setter;
 public class CategoryDTO {
 
     private Long id;
-    private String description;
+    private String name;
 
     public CategoryDTO(Category category){
         this.id = category.getId();
-        this.description = category.getName();
+        this.name = category.getName();
     }
 
     public Category getObjectFromDTO(CategoryDTO dto){
        return Category.builder()
                 .id(dto.getId())
-                .name(dto.getDescription())
+                .name(dto.getName())
                 .build();
     }
 }

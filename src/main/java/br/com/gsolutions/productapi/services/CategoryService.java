@@ -3,11 +3,15 @@ package br.com.gsolutions.productapi.services;
 import br.com.gsolutions.productapi.dto.CategoryDTO;
 import br.com.gsolutions.productapi.entities.Category;
 import br.com.gsolutions.productapi.repositories.CategoryRepository;
-import br.com.gsolutions.productapi.services.exceptions.EntityNotFoundException;
+import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
+import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,17 +42,30 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id){
         Optional<Category> optional = repository.findById(id);
-        return optional.map(CategoryDTO::new).orElseThrow(() -> new EntityNotFoundException("Entity Not Found"));
+        return optional.map(CategoryDTO::new).orElseThrow(() -> new ResourceNotFoundException("Entity Not Found"));
     }
 
-    public Category update(Long id, CategoryDTO category){
-        CategoryDTO savedCategory = this.findById(id);
-        savedCategory.setDescription(category.getDescription());
-        return repository.save(new Category(savedCategory));
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO dto){
+        try{
+            Category entity = repository.getOne(id);
+            entity.setName(dto.getName());
+            entity = repository.save(entity);
+            return new CategoryDTO(entity);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Entity not Found by id: "+ id);
+        }
     }
 
     public void delete(Long id){
-        CategoryDTO savedCategory = this.findById(id);
-        repository.delete(new Category(savedCategory));
+        try{
+            repository.deleteById(id);
+
+        }catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("Entity not Found: " + id);
+        }
+        catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Integrity violation");
+        }
     }
 }
