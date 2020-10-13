@@ -8,6 +8,8 @@ import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundExceptio
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +25,9 @@ public class CategoryService {
     private final CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> list(){
-        List<Category> list = repository.findAll();
-        return list.stream().map(CategoryDTO::new).collect(Collectors.toList());
+    public Page<CategoryDTO> list(PageRequest pageRequest){
+        Page<Category> list = repository.findAll(pageRequest);
+        return list.map(CategoryDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -67,5 +69,9 @@ public class CategoryService {
         catch (DataIntegrityViolationException e){
             throw new DatabaseException("Integrity violation");
         }
+    }
+
+    public void pagedList(PageRequest pageRequest) {
+
     }
 }
