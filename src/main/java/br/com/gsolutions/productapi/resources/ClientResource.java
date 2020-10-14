@@ -1,7 +1,7 @@
 package br.com.gsolutions.productapi.resources;
 
-import br.com.gsolutions.productapi.dto.CategoryDTO;
-import br.com.gsolutions.productapi.services.CategoryService;
+import br.com.gsolutions.productapi.dto.ClientDTO;
+import br.com.gsolutions.productapi.services.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,14 +13,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/categories")
+@RequestMapping(value = "/clients")
 @AllArgsConstructor
-public class CategoryResource {
+public class ClientResource {
 
-    private final CategoryService service;
+    private final ClientService service;
 
     @GetMapping
-    public ResponseEntity<Page<CategoryDTO>> findAll(
+    public ResponseEntity<Page<ClientDTO>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
@@ -31,12 +31,12 @@ public class CategoryResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> findById(@PathVariable("id") Long id){
+    public ResponseEntity<ClientDTO> findById(@PathVariable("id") Long id){
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto){
+    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto){
         dto = service.create(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
@@ -44,13 +44,13 @@ public class CategoryResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> update(@PathVariable("id") Long id, @RequestBody CategoryDTO dto){
+    public ResponseEntity<ClientDTO> update(@PathVariable("id") Long id, @RequestBody ClientDTO dto){
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ClientDTO> delete(@PathVariable("id") Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,11 +26,6 @@ public class CategoryService {
     public Page<CategoryDTO> list(PageRequest pageRequest){
         Page<Category> list = repository.findAll(pageRequest);
         return list.map(CategoryDTO::new);
-    }
-
-    @Transactional(readOnly = true)
-    public Category findByName(String name){
-        return repository.findByName(name);
     }
 
     @Transactional

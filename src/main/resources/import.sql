@@ -80,3 +80,14 @@ INSERT INTO PRODUCT_CATEGORY (product_id, category_id) VALUES (25, 3);
 INSERT INTO PRODUCT_CATEGORY (product_id, category_id) VALUES (22, 3);
 INSERT INTO PRODUCT_CATEGORY (product_id, category_id) VALUES (23, 3);
 INSERT INTO PRODUCT_CATEGORY (product_id, category_id) VALUES (24, 3);
+
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Maria Joana Motta', '38791195039', 1350.00, TIMESTAMP WITH TIME ZONE '1990-07-14T10:00:00Z', 1);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Maria Tereza Alves', '34478489017', 2750.00, TIMESTAMP WITH TIME ZONE '1988-04-04T10:00:00Z', 3);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Joana Maia', '24607375055', 1000.00, TIMESTAMP WITH TIME ZONE '2000-12-20T10:00:00Z', 0);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Caio Gomes da Costa', '80429010036', 1350.00, TIMESTAMP WITH TIME ZONE '2002-02-13T10:00:00Z', 0);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'João Antônio dos Santos', '17076603012', 1500.00, TIMESTAMP WITH TIME ZONE '1996-04-16T10:00:00Z', 1);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Macelo Ferreira Gomes', '42129421008', 4050.00, TIMESTAMP WITH TIME ZONE '1985-05-20T10:00:00Z', 1);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Ana Carolina Ribeiro', '04810330095', 5000.00, TIMESTAMP WITH TIME ZONE '1985-01-10T10:00:00Z', 1);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Julia Maria da Silva', '69418009099', 1350.00, TIMESTAMP WITH TIME ZONE '1987-03-05T10:00:00Z', 1);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Mario Ferreira dos Santos', '67252087034', 1350.00, TIMESTAMP WITH TIME ZONE '1995-08-08T10:00:00Z', 0);
+INSERT INTO CLIENT(name, cpf, income, birthdate, children) values ( 'Fernando Pimentel', '45957317012', 1850.00, TIMESTAMP WITH TIME ZONE '1993-09-21T10:00:00Z', 1);

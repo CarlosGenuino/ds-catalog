@@ -1,10 +1,9 @@
 package br.com.gsolutions.productapi.services;
 
-import br.com.gsolutions.productapi.dto.CategoryDTO;
-import br.com.gsolutions.productapi.dto.ProductDTO;
+import br.com.gsolutions.productapi.dto.ClientDTO;
 import br.com.gsolutions.productapi.entities.Category;
-import br.com.gsolutions.productapi.entities.Product;
-import br.com.gsolutions.productapi.repositories.ProductRepository;
+import br.com.gsolutions.productapi.entities.Client;
+import br.com.gsolutions.productapi.repositories.ClientRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
@@ -20,38 +19,38 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ProductService {
+public class ClientService {
 
-    private final ProductRepository repository;
+    private final ClientRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> list(PageRequest pageRequest){
-        Page<Product> list = repository.findAll(pageRequest);
-        return list.map(ProductDTO::new);
+    public Page<ClientDTO> list(PageRequest pageRequest){
+        Page<Client> list = repository.findAll(pageRequest);
+        return list.map(ClientDTO::new);
     }
 
     @Transactional
-    public ProductDTO create(ProductDTO dto){
-        Product savedProduct = new Product();
-        copyDataFromDTO(dto, savedProduct);
-        savedProduct =  repository.save(savedProduct);
-        return new ProductDTO(savedProduct);
+    public ClientDTO create(ClientDTO dto){
+        Client savedClient = new Client();
+        copyDataFromDTO(dto, savedClient);
+        savedClient =  repository.save(savedClient);
+        return new ClientDTO(savedClient);
     }
 
     @Transactional(readOnly = true)
-    public ProductDTO findById(Long id){
-        Optional<Product> optional = repository.findById(id);
-        return optional.map(product -> new ProductDTO(product, product.getCategories()))
+    public ClientDTO findById(Long id){
+        Optional<Client> optional = repository.findById(id);
+        return optional.map(ClientDTO::new)
                 .orElseThrow(() -> new ResourceNotFoundException("Entity Not Found"));
     }
 
     @Transactional
-    public ProductDTO update(Long id, ProductDTO dto){
+    public ClientDTO update(Long id, ClientDTO dto){
         try{
-            Product entity = repository.getOne(id);
+            Client entity = repository.getOne(id);
             copyDataFromDTO(dto, entity);
             entity = repository.save(entity);
-            return new ProductDTO(entity);
+            return new ClientDTO(entity);
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Entity not Found by id: "+ id);
         }
@@ -68,13 +67,11 @@ public class ProductService {
         }
     }
 
-    private void copyDataFromDTO(ProductDTO dto, Product entity) {
+    private void copyDataFromDTO(ClientDTO dto, Client entity) {
+        entity.setCpf(dto.getCpf());
         entity.setName(dto.getName());
-        entity.setDate(dto.getDate());
-        entity.setDescription(dto.getDescription());
-        entity.setPrice(dto.getPrice());
-        entity.setImgUrl(dto.getImgUrl());
-        entity.getCategories().clear();
-        dto.getCategories().forEach(categoryDTO -> entity.getCategories().add(new Category(categoryDTO)));
+        entity.setBirthdate(dto.getBirthdate());
+        entity.setChildren(dto.getChildren());
+        entity.setIncome(dto.getIncome());
     }
 }

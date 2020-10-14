@@ -19,11 +19,4 @@ public class CategoryDTO {
         this.id = category.getId();
         this.name = category.getName();
     }
-
-    public Category getObjectFromDTO(CategoryDTO dto){
-       return Category.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .build();
-    }
 }

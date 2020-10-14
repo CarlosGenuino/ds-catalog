@@ -1,8 +1,9 @@
 package br.com.gsolutions.productapi.entities;
 
 import br.com.gsolutions.productapi.dto.ProductDTO;
-import lombok.*;
-import org.hibernate.validator.constraints.Length;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
