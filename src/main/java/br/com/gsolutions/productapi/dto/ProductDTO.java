@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductDTO {
 
     private Long id;
@@ -29,7 +30,16 @@ public class ProductDTO {
 
     private Instant date;
 
-    private Set<Category> categories = new HashSet<>();
+    private List<CategoryDTO> categories = new ArrayList<>();
+
+    public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant date) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imgUrl = imgUrl;
+        this.date = date;
+    }
 
     public ProductDTO(Product entity) {
         this.id = entity.getId();
@@ -37,6 +47,10 @@ public class ProductDTO {
         this.description = entity.getDescription();
         this.date = entity.getDate();
         this.imgUrl = entity.getImgUrl();
-        this.categories = entity.getCategories();
+    }
+
+    public ProductDTO(Product entity, Set<Category> categories){
+        this(entity);
+        categories.forEach(category -> this.categories.add(new CategoryDTO(category)));
     }
 }
