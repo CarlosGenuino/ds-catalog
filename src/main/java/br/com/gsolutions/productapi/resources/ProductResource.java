@@ -2,7 +2,6 @@ package br.com.gsolutions.productapi.resources;
 
 import br.com.gsolutions.productapi.dto.ProductDTO;
 import br.com.gsolutions.productapi.services.ProductService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,10 +13,13 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/products")
-@AllArgsConstructor
 public class ProductResource {
 
     private final ProductService service;
+
+    public ProductResource(ProductService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(

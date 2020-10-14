@@ -2,7 +2,6 @@ package br.com.gsolutions.productapi.resources;
 
 import br.com.gsolutions.productapi.dto.ClientDTO;
 import br.com.gsolutions.productapi.services.ClientService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,10 +13,13 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/clients")
-@AllArgsConstructor
 public class ClientResource {
 
     private final ClientService service;
+
+    public ClientResource(ClientService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<Page<ClientDTO>> findAll(

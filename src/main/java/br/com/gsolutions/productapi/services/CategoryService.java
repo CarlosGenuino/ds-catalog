@@ -5,7 +5,6 @@ import br.com.gsolutions.productapi.entities.Category;
 import br.com.gsolutions.productapi.repositories.CategoryRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -17,8 +16,11 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class CategoryService {
+
+    public CategoryService(CategoryRepository repository) {
+        this.repository = repository;
+    }
 
     private final CategoryRepository repository;
 

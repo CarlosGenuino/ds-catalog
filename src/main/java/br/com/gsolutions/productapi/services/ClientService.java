@@ -18,10 +18,13 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class ClientService {
 
     private final ClientRepository repository;
+
+    public ClientService(ClientRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional(readOnly = true)
     public Page<ClientDTO> list(PageRequest pageRequest){

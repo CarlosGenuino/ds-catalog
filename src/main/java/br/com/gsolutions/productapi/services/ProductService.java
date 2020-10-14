@@ -1,13 +1,11 @@
 package br.com.gsolutions.productapi.services;
 
-import br.com.gsolutions.productapi.dto.CategoryDTO;
 import br.com.gsolutions.productapi.dto.ProductDTO;
 import br.com.gsolutions.productapi.entities.Category;
 import br.com.gsolutions.productapi.entities.Product;
 import br.com.gsolutions.productapi.repositories.ProductRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -19,10 +17,13 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class ProductService {
 
     private final ProductRepository repository;
+
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> list(PageRequest pageRequest){

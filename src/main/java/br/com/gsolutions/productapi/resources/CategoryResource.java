@@ -2,7 +2,6 @@ package br.com.gsolutions.productapi.resources;
 
 import br.com.gsolutions.productapi.dto.CategoryDTO;
 import br.com.gsolutions.productapi.services.CategoryService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,10 +13,13 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/categories")
-@AllArgsConstructor
 public class CategoryResource {
 
     private final CategoryService service;
+
+    public CategoryResource(CategoryService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<Page<CategoryDTO>> findAll(
