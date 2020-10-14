@@ -70,8 +70,4 @@ public class CategoryService {
             throw new DatabaseException("Integrity violation");
         }
     }
-
-    public void pagedList(PageRequest pageRequest) {
-
-    }
 }
