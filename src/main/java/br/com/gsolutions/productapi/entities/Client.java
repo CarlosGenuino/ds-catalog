@@ -16,7 +16,12 @@ import java.time.Instant;
 @AllArgsConstructor
 public class Client implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1158825293205662083L;
+
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

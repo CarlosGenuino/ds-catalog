@@ -17,7 +17,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class Product implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5935703171790054007L;
+
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
