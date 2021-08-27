@@ -22,8 +22,11 @@ services:
       context: ./
       dockerfile: Dockerfile
     environment:
-      - APP_OPTIONS=--spring.datasource.url=jdbc:postgresql://ds-catalog-db:5432/products --spring.datasource.username=develop --spring.datasource.password=pr0duct --spring.profiles.active=dev
-#      - opentracing.jaeger.udp-sender.host=jaeger
+      - spring.datasource.url=jdbc:postgresql://ds-catalog-db:5432/products
+      - spring.datasource.username=develop
+      - spring.datasource.password=pr0duct
+      - spring.profiles.active=dev
+      - opentracing.jaeger.udp-sender.host=jaeger
 #      - opentracing.jaeger.udp-sender.port=6831
     ports:
       - "3000:8080"
@@ -41,3 +44,5 @@ services:
       - 14268:14268
       - 14250:14250
       - 9411:9411
+    networks:
+      - dsnet
