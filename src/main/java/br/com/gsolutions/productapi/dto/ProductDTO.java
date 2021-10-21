@@ -2,14 +2,12 @@ package br.com.gsolutions.productapi.dto;
 
 import br.com.gsolutions.productapi.entities.Category;
 import br.com.gsolutions.productapi.entities.Product;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

@@ -1,9 +1,7 @@
 package br.com.gsolutions.productapi.entities;
 
 import br.com.gsolutions.productapi.dto.ProductDTO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +12,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Serializable {
 
     /**
@@ -50,5 +50,12 @@ public class Product implements Serializable {
         this.description = dto.getDescription();
         this.date = dto.getDate();
         this.imgUrl = dto.getImgUrl();
+    }
+
+    public void addCategory(Category category){
+        if (getCategories() == null) {
+            setCategories(new HashSet<>());
+        }
+        getCategories().add(category);
     }
 }
