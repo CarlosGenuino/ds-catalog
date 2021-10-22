@@ -35,7 +35,6 @@ public class ProductServiceTests {
     private Long nonExistId;
     private Long dependantId;
     private Product product;
-    private PageImpl<Product> page;
 
     @BeforeEach
     void setUp(){
@@ -43,7 +42,7 @@ public class ProductServiceTests {
         nonExistId = 2L;
         dependantId = 3L;
         product = ProductFactory.createNewProduct();
-        page = new PageImpl<>(List.of(product));
+        PageImpl<Product> page = new PageImpl<>(List.of(product));
 
         // FindAll
         Mockito.when(repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
