@@ -51,8 +51,6 @@ public class ProductRepositoryTests {
         Assertions.assertFalse(optional.isPresent());
     }
 
-
-
     @Test
     public void shouldSaveANewObjectWhenIdIsNull(){
         Product product = ProductFactory.createNewProduct();
@@ -60,7 +58,6 @@ public class ProductRepositoryTests {
         product = repository.save(product);
         Assertions.assertNotNull(product.getId());
     }
-
 
     @Test
     public void deleteSholdDeleteObjectWhenIdExists(){
