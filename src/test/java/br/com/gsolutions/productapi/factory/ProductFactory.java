@@ -8,13 +8,7 @@ import java.time.Instant;
 
 public class ProductFactory {
     public static Product createNewProduct() {
-
-        Category category = Category.builder()
-                .id(2L).name("eletronics")
-                .createdAt(Instant.now())
-                .updatedAt(Instant.now())
-                .build();
-
+        Category category = CategoryFactory.createNewCategory();
         Product product = Product.builder()
                 .id(1L)
                 .name("Chinese Phone")
