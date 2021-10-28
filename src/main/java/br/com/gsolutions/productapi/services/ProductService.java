@@ -36,7 +36,7 @@ public class ProductService {
     public ProductDTO create(ProductDTO dto){
         Product savedProduct = new Product();
         copyDataFromDTO(dto, savedProduct);
-        savedProduct =  repository.save(savedProduct);
+        repository.save(savedProduct);
         return new ProductDTO(savedProduct);
     }
 

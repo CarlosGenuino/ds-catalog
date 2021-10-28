@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,11 +50,11 @@ public class ProductServiceTests {
 
         // FindOne
         Mockito.when(repository.getOne(existingId)).thenReturn(product);
-        Mockito.when(repository.getOne(nonExistId)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(repository.getOne(nonExistId)).thenThrow(EntityNotFoundException.class);
 
         // FindById
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
-        Mockito.when(repository.findById(nonExistId)).thenReturn(Optional.empty());
+        Mockito.when(repository.findById(nonExistId)).thenThrow(ResourceNotFoundException.class);
 
         // Save
         Mockito.when(repository.save(product)).thenReturn(product);
@@ -69,8 +70,15 @@ public class ProductServiceTests {
 
     @Test
     void whenSave(){
-        repository.save(product);
-        Assertions.assertEquals(product, product);
+        Product product2 = repository.save(product);
+        Assertions.assertEquals(product, product2);
+    }
+
+    @Test
+    void whenCreate(){
+        ProductDTO dto = ProductFactory.createProductDTO();
+        ProductDTO retorno = service.create(dto);
+        Assertions.assertEquals(retorno.getName(), dto.getName());
     }
 
     @Test
