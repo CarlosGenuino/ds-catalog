@@ -1,13 +1,9 @@
 package br.com.gsolutions.productapi.services;
 
 import br.com.gsolutions.productapi.dto.CategoryDTO;
-import br.com.gsolutions.productapi.dto.ProductDTO;
 import br.com.gsolutions.productapi.entities.Category;
-import br.com.gsolutions.productapi.entities.Product;
 import br.com.gsolutions.productapi.factory.CategoryFactory;
-import br.com.gsolutions.productapi.factory.ProductFactory;
 import br.com.gsolutions.productapi.repositories.CategoryRepository;
-import br.com.gsolutions.productapi.repositories.ProductRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
