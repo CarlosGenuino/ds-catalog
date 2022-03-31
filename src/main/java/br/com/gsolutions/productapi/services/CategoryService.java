@@ -32,7 +32,8 @@ public class CategoryService {
 
     @Transactional
     public CategoryDTO create(CategoryDTO category){
-        Category savedCategory =  repository.save(new Category(category));
+        Category savedCategory = new Category(category);
+        repository.save(savedCategory);
         return new CategoryDTO(savedCategory);
     }
 

@@ -34,7 +34,7 @@ public class ClientService {
     public ClientDTO create(ClientDTO dto){
         Client savedClient = new Client();
         copyDataFromDTO(dto, savedClient);
-        savedClient =  repository.save(savedClient);
+        repository.save(savedClient);
         return new ClientDTO(savedClient);
     }
 

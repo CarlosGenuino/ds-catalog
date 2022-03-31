@@ -1,8 +1,10 @@
 package br.com.gsolutions.productapi.services;
 
 import br.com.gsolutions.productapi.dto.ClientDTO;
+import br.com.gsolutions.productapi.dto.ProductDTO;
 import br.com.gsolutions.productapi.entities.Client;
 import br.com.gsolutions.productapi.factory.ClientFactory;
+import br.com.gsolutions.productapi.factory.ProductFactory;
 import br.com.gsolutions.productapi.repositories.ClientRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +55,7 @@ class ClientServiceTest {
 
         // FindOne
         Mockito.when(repository.getOne(existingId)).thenReturn(client);
-        Mockito.when(repository.getOne(nonExistId)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(repository.getOne(nonExistId)).thenThrow(EntityNotFoundException.class);
 
         // FindById
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(client));
@@ -68,6 +71,13 @@ class ClientServiceTest {
         Mockito.doNothing().when(repository).deleteById(existingId);
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistId);
         Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependantId);
+    }
+
+    @Test
+    void whenCreate(){
+        ClientDTO dto = ClientFactory.createNewClientDTO();
+        ClientDTO retorno = service.create(dto);
+        Assertions.assertEquals(retorno.getName(), dto.getName());
     }
 
     @Test

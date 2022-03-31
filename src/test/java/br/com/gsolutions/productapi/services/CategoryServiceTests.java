@@ -1,11 +1,14 @@
 package br.com.gsolutions.productapi.services;
 
 import br.com.gsolutions.productapi.dto.CategoryDTO;
+import br.com.gsolutions.productapi.dto.ProductDTO;
 import br.com.gsolutions.productapi.entities.Category;
 import br.com.gsolutions.productapi.factory.CategoryFactory;
+import br.com.gsolutions.productapi.factory.ProductFactory;
 import br.com.gsolutions.productapi.repositories.CategoryRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,11 +56,11 @@ public class CategoryServiceTests {
 
         // FindOne
         Mockito.when(repository.getOne(existingId)).thenReturn(category);
-        Mockito.when(repository.getOne(nonExistId)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(repository.getOne(nonExistId)).thenThrow(EntityNotFoundException.class);
 
         // FindById
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(category));
-        Mockito.when(repository.findById(nonExistId)).thenReturn(Optional.empty());
+        Mockito.when(repository.findById(nonExistId)).thenReturn(null);
 
         // Save
         Mockito.when(repository.save(category)).thenReturn(category);
@@ -68,6 +72,14 @@ public class CategoryServiceTests {
         Mockito.doNothing().when(repository).deleteById(existingId);
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistId);
         Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependantId);
+    }
+
+    @Test
+    void whenCreate(){
+        CategoryDTO dto = CategoryFactory.createNewCategoryDTO();
+        CategoryDTO retorno = service.create(dto);
+        Assertions.assertNotNull(retorno.getId());
+        Assertions.assertEquals(dto.getName(), retorno.getName());
     }
 
     @Test
