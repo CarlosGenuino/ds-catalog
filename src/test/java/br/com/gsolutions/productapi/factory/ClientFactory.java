@@ -9,6 +9,7 @@ public class ClientFactory {
 
     public static Client createNewClient(){
         return Client.builder()
+                .id(1L)
                 .cpf("123123123-12")
                 .name("Carlos Alexandre Silva Genuino")
                 .income(5000D)
