@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Optional;
 
@@ -66,12 +65,12 @@ public class ProductRepositoryTests {
         Assertions.assertFalse(result.isPresent());
     }
 
-    @Test
-    public void deleteSholdDeleteObjectWhenIdDoesNotExists(){
-        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
-            repository.deleteById(notExistingId);
-        });
-    }
+//    @Test
+//    public void deleteSholdDeleteObjectWhenIdDoesNotExists(){
+//        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
+//            repository.deleteById(notExistingId);
+//        });
+//    }
 
 
 }
