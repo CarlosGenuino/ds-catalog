@@ -2,8 +2,7 @@ package br.com.gsolutions.productapi.services;
 
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;

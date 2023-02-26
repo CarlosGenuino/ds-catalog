@@ -3,7 +3,7 @@ package br.com.gsolutions.productapi.entities;
 import br.com.gsolutions.productapi.dto.CategoryDTO;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
