@@ -1,29 +1,49 @@
 package br.com.gsolutions.productapi.services.validation;
 
-import br.com.gsolutions.productapi.dto.UserInsertDTO;
+import br.com.gsolutions.productapi.dto.UserUpdateDTO;
 import br.com.gsolutions.productapi.resources.exceptions.ErrorMessage;
 import br.com.gsolutions.productapi.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class UserUpdateValidor implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
+import static org.springframework.web.servlet.HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE;
+
+public class UserUpdateValidor implements ConstraintValidator<UserUpdateValid, UserUpdateDTO> {
 
     @Autowired
     private UserService service;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @Override
-    public void initialize(UserInsertValid constraintAnnotation) {
+    public void initialize(UserUpdateValid constraintAnnotation) {
     }
 
     @Override
-    public boolean isValid(UserInsertDTO userInsertDTO, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(UserUpdateDTO userUpdateDTO, ConstraintValidatorContext constraintValidatorContext) {
         List<ErrorMessage> errors = new ArrayList<>();
-        var user = service.findByEmail(userInsertDTO.getEmail());
-        if (user != null){
+
+        Map<String, String> attribute = (Map<String, String>) request.getAttribute(URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        var strId = attribute.get("id");
+        long userId = 0L;
+        if (strId != null && !strId.isEmpty() && !strId.isBlank()){
+          userId = Long.parseLong(strId);
+        }
+
+        if (userId == 0){
+            errors.add(new ErrorMessage("id", "invalid id"));
+        }
+
+        var user = service.findByEmail(userUpdateDTO.getEmail());
+        if (user != null && user.getId() != userId){
             errors.add(new ErrorMessage("email", "email already inserted"));
         }
 

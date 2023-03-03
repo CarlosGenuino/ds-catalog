@@ -8,7 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = UserInsertValidor.class)
+@Constraint(validatedBy = UserUpdateValidor.class)
 @Target({ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserUpdateValid {

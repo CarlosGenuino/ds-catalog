@@ -2,6 +2,7 @@ package br.com.gsolutions.productapi.resources;
 
 import br.com.gsolutions.productapi.dto.UserDTO;
 import br.com.gsolutions.productapi.dto.UserInsertDTO;
+import br.com.gsolutions.productapi.dto.UserUpdateDTO;
 import br.com.gsolutions.productapi.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -39,9 +40,9 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable("id") Long id, @RequestBody UserDTO dto){
-        dto = service.update(id, dto);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDTO> update(@PathVariable("id") Long id, @RequestBody @Valid UserUpdateDTO dto){
+        UserDTO userDTO = service.update(id, dto);
+        return ResponseEntity.ok(userDTO);
     }
 
     @DeleteMapping(value = "/{id}")

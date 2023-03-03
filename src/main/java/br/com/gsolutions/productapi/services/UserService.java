@@ -3,6 +3,7 @@ package br.com.gsolutions.productapi.services;
 import br.com.gsolutions.productapi.dto.RoleDTO;
 import br.com.gsolutions.productapi.dto.UserDTO;
 import br.com.gsolutions.productapi.dto.UserInsertDTO;
+import br.com.gsolutions.productapi.dto.UserUpdateDTO;
 import br.com.gsolutions.productapi.entities.Category;
 import br.com.gsolutions.productapi.entities.Role;
 import br.com.gsolutions.productapi.entities.User;
@@ -58,7 +59,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO dto){
+    public UserDTO update(Long id, UserUpdateDTO dto){
         try{
             User entity = repository.getReferenceById(id);
             copyDataFromDTO(dto, entity);
