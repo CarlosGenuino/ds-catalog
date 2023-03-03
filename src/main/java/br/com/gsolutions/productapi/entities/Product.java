@@ -1,6 +1,8 @@
 package br.com.gsolutions.productapi.entities;
 
 import br.com.gsolutions.productapi.dto.ProductDTO;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import jakarta.persistence.*;
@@ -25,11 +27,13 @@ public class Product implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 5, max = 255, message = "O tamanho do nome do produto deve ser entre 5 e 255")
     private String name;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Positive
     private Double price;
 
     private String imgUrl;

@@ -1,16 +1,17 @@
 package br.com.gsolutions.productapi.entities;
 
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "tb_user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,10 +31,10 @@ public class User implements Serializable {
     private String password;
 
     @Getter
-    @JoinTable(name = "user_role",
+    @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 }
 
