@@ -4,8 +4,6 @@ import br.com.gsolutions.productapi.dto.RoleDTO;
 import br.com.gsolutions.productapi.dto.UserDTO;
 import br.com.gsolutions.productapi.dto.UserInsertDTO;
 import br.com.gsolutions.productapi.dto.UserUpdateDTO;
-import br.com.gsolutions.productapi.entities.Category;
-import br.com.gsolutions.productapi.entities.Role;
 import br.com.gsolutions.productapi.entities.User;
 import br.com.gsolutions.productapi.repositories.RoleRepository;
 import br.com.gsolutions.productapi.repositories.UserRepository;
@@ -14,11 +12,15 @@ import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundExceptio
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,12 +29,14 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
     private final RoleRepository roleRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 
 
@@ -92,7 +96,19 @@ public class UserService {
         }
     }
 
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
+
        return repository.findByEmail(email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var opt = repository.findByEmail(username);
+        if (opt.isEmpty()){
+            logger.error("user not found for email {}", username);
+            throw new UsernameNotFoundException("cannot find user "+ username);
+        }
+        logger.info("user found for email {}", username);
+        return opt.get();
     }
 }

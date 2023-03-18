@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class UserInsertValidor implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
 
@@ -24,7 +23,7 @@ public class UserInsertValidor implements ConstraintValidator<UserInsertValid, U
     public boolean isValid(UserInsertDTO userInsertDTO, ConstraintValidatorContext constraintValidatorContext) {
         List<ErrorMessage> errors = new ArrayList<>();
         var user = service.findByEmail(userInsertDTO.getEmail());
-        if (user != null){
+        if (user.isPresent()){
             errors.add(new ErrorMessage("email", "email already inserted"));
         }
 

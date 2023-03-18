@@ -6,8 +6,7 @@ import br.com.gsolutions.productapi.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.HandlerMapping;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +14,12 @@ import java.util.Map;
 
 import static org.springframework.web.servlet.HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE;
 
+@AllArgsConstructor
 public class UserUpdateValidor implements ConstraintValidator<UserUpdateValid, UserUpdateDTO> {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
 
-    @Autowired
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
 
     @Override
     public void initialize(UserUpdateValid constraintAnnotation) {
@@ -43,7 +41,7 @@ public class UserUpdateValidor implements ConstraintValidator<UserUpdateValid, U
         }
 
         var user = service.findByEmail(userUpdateDTO.getEmail());
-        if (user != null && user.getId() != userId){
+        if (user.isPresent()){
             errors.add(new ErrorMessage("email", "email already inserted"));
         }
 
