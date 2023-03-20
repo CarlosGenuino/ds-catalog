@@ -1,5 +1,6 @@
 package br.com.gsolutions.productapi.entities;
 
+import br.com.gsolutions.productapi.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,9 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,9 +21,6 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements UserDetails, Serializable {
 
-    private static final long serialVersionUID = 1158345293205662843L;
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -33,6 +29,9 @@ public class User implements UserDetails, Serializable {
     private String lastName;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     @Getter
     @JoinTable(name = "tb_user_role",
