@@ -6,6 +6,7 @@ import br.com.gsolutions.productapi.factory.ProductFactory;
 import br.com.gsolutions.productapi.services.ProductService;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
+import br.com.gsolutions.productapi.token.TokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -32,6 +34,12 @@ public class ProductResourceTests {
 
     @MockBean
     private JwtService jwtService;
+
+    @MockBean
+    private TokenRepository tokenRepository;
+
+    @MockBean
+    private UserDetailsService userDetailsService;
 
     @MockBean
     private ProductService service;
