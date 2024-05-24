@@ -49,8 +49,8 @@ public class ProductServiceTests {
         Mockito.when(repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
         // FindOne
-        Mockito.when(repository.getOne(existingId)).thenReturn(product);
-        Mockito.when(repository.getOne(nonExistId)).thenThrow(EntityNotFoundException.class);
+        Mockito.when(repository.getReferenceById(existingId)).thenReturn(product);
+        Mockito.when(repository.getReferenceById(nonExistId)).thenThrow(EntityNotFoundException.class);
 
         // FindById
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
@@ -88,7 +88,7 @@ public class ProductServiceTests {
         dto.setName(novoNome);
         dto = service.update(existingId, dto);
         Assertions.assertEquals(novoNome, dto.getName());
-        Mockito.verify(repository, Mockito.times(1)).getOne(existingId);
+        Mockito.verify(repository, Mockito.times(1)).getReferenceById(existingId);
         Mockito.verify(repository, Mockito.times(1)).save(product);
     }
 

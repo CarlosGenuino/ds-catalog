@@ -1,5 +1,6 @@
 package br.com.gsolutions.productapi.resources;
 
+import br.com.gsolutions.productapi.config.JwtService;
 import br.com.gsolutions.productapi.dto.ProductDTO;
 import br.com.gsolutions.productapi.factory.ProductFactory;
 import br.com.gsolutions.productapi.services.ProductService;
@@ -28,6 +29,9 @@ public class ProductResourceTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private JwtService jwtService;
 
     @MockBean
     private ProductService service;

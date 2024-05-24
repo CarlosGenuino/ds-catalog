@@ -1,14 +1,11 @@
 package br.com.gsolutions.productapi.services;
 
 import br.com.gsolutions.productapi.dto.CategoryDTO;
-import br.com.gsolutions.productapi.dto.ProductDTO;
 import br.com.gsolutions.productapi.entities.Category;
 import br.com.gsolutions.productapi.factory.CategoryFactory;
-import br.com.gsolutions.productapi.factory.ProductFactory;
 import br.com.gsolutions.productapi.repositories.CategoryRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,8 +52,8 @@ public class CategoryServiceTests {
         Mockito.when(repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
         // FindOne
-        Mockito.when(repository.getOne(existingId)).thenReturn(category);
-        Mockito.when(repository.getOne(nonExistId)).thenThrow(EntityNotFoundException.class);
+        Mockito.when(repository.getReferenceById(existingId)).thenReturn(category);
+        Mockito.when(repository.getReferenceById(nonExistId)).thenThrow(EntityNotFoundException.class);
 
         // FindById
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(category));
@@ -95,7 +92,7 @@ public class CategoryServiceTests {
         dto.setName(novoNome);
         dto = service.update(existingId, dto);
         Assertions.assertEquals(novoNome, dto.getName());
-        Mockito.verify(repository, Mockito.times(1)).getOne(existingId);
+        Mockito.verify(repository, Mockito.times(1)).getReferenceById(existingId);
         Mockito.verify(repository, Mockito.times(1)).save(category);
     }
 

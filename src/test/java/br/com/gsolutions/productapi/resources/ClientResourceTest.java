@@ -1,10 +1,8 @@
 package br.com.gsolutions.productapi.resources;
 
-import br.com.gsolutions.productapi.dto.CategoryDTO;
+import br.com.gsolutions.productapi.config.JwtService;
 import br.com.gsolutions.productapi.dto.ClientDTO;
-import br.com.gsolutions.productapi.factory.CategoryFactory;
 import br.com.gsolutions.productapi.factory.ClientFactory;
-import br.com.gsolutions.productapi.services.CategoryService;
 import br.com.gsolutions.productapi.services.ClientService;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
@@ -25,7 +23,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(ClientResource.class)
 class ClientResourceTest {
@@ -34,6 +31,10 @@ class ClientResourceTest {
 
     @MockBean
     private ClientService service;
+
+    @MockBean
+    private JwtService jwtService;
+
 
     @Autowired
     private ObjectMapper mapper;
