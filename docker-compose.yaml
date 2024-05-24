@@ -14,6 +14,8 @@ services:
       - POSTGRES_USER=develop
     networks:
       - dsnet
+    volumes:
+      - ./db:/var/lib/postgresql
   ds-catalog-api:
     container_name: ds-catalog-api
     depends_on:
@@ -46,3 +48,5 @@ services:
       - 9411:9411
     networks:
       - dsnet
+    volumes:
+      - db
