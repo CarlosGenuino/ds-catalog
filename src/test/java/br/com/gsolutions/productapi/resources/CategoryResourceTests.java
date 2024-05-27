@@ -6,6 +6,7 @@ import br.com.gsolutions.productapi.factory.CategoryFactory;
 import br.com.gsolutions.productapi.services.CategoryService;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
+import br.com.gsolutions.productapi.token.Token;
 import br.com.gsolutions.productapi.token.TokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,15 +17,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
+import java.util.Optional;
 
 @WebMvcTest(CategoryResource.class)
 public class CategoryResourceTests {
@@ -63,6 +68,8 @@ public class CategoryResourceTests {
 
         PageImpl<CategoryDTO> page = new PageImpl<>(List.of(dto));
 
+        Mockito.when(tokenRepository.findByToken(Mockito.anyString())).thenReturn(Optional.of(new Token()));
+
         Mockito.when(service.list(ArgumentMatchers.any())).thenReturn(page);
 
         Mockito.when(service.findById(existingId)).thenReturn(dto);
@@ -84,6 +91,9 @@ public class CategoryResourceTests {
 
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.post(baseUrl)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bodyJson)
         );
@@ -97,6 +107,9 @@ public class CategoryResourceTests {
     void deleteShouldReturnNoContent() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), existingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -106,6 +119,9 @@ public class CategoryResourceTests {
     void deleteShouldReturnNotFound() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), nonExistingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -115,6 +131,9 @@ public class CategoryResourceTests {
     void deleteShouldReturnBadRequest() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), dependentId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -126,6 +145,9 @@ public class CategoryResourceTests {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.put(baseUrl.concat("/{id}"), existingId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .content(body)
                         .accept(MediaType.APPLICATION_JSON)
         );
@@ -141,6 +163,9 @@ public class CategoryResourceTests {
         String body = mapper.writeValueAsString(dto);
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.put(baseUrl.concat("/{id}"), nonExistingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                         .accept(MediaType.APPLICATION_JSON)
@@ -153,6 +178,9 @@ public class CategoryResourceTests {
     void getShouldReturnPage() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -163,6 +191,9 @@ public class CategoryResourceTests {
     void shouldReturnObjectDto() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl.concat("/{id}"), existingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isOk());
@@ -174,6 +205,9 @@ public class CategoryResourceTests {
     void shouldThrowsBadRequest() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl.concat("/{id}"), nonExistingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isNotFound());

@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -84,6 +85,9 @@ public class ProductResourceTests {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.post(baseUrl)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .content(bodyJson)
         );
 
@@ -98,6 +102,9 @@ public class ProductResourceTests {
     void deleteShouldReturnNoContent() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), existingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -107,6 +114,9 @@ public class ProductResourceTests {
     void deleteShouldReturnNotFound() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), nonExistingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -116,6 +126,9 @@ public class ProductResourceTests {
     void deleteShouldReturnBadRequest() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), dependentId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -128,7 +141,9 @@ public class ProductResourceTests {
                 MockMvcRequestBuilders.put(baseUrl.concat("/{id}"), existingId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
-                        .accept(MediaType.APPLICATION_JSON)
+                       .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()).accept(MediaType.APPLICATION_JSON)
         );
 
         result.andExpect(MockMvcResultMatchers.status().isOk());
@@ -145,7 +160,9 @@ public class ProductResourceTests {
                 MockMvcRequestBuilders.put(baseUrl.concat("/{id}"), nonExistingId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
-                        .accept(MediaType.APPLICATION_JSON)
+                       .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()).accept(MediaType.APPLICATION_JSON)
         );
 
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -155,7 +172,9 @@ public class ProductResourceTests {
     void getShouldReturnPage() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl)
-                        .accept(MediaType.APPLICATION_JSON)
+                       .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()).accept(MediaType.APPLICATION_JSON)
         );
 
         result.andExpect(MockMvcResultMatchers.status().isOk());
@@ -165,7 +184,9 @@ public class ProductResourceTests {
     void shouldReturnObjectDto() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl.concat("/{id}"), existingId)
-                        .accept(MediaType.APPLICATION_JSON)
+                       .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()).accept(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
@@ -177,7 +198,9 @@ public class ProductResourceTests {
     void shouldThrowsBadRequest() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl.concat("/{id}"), nonExistingId)
-                        .accept(MediaType.APPLICATION_JSON)
+                       .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()).accept(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
     }

@@ -29,7 +29,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var initialRole = new Role(RoleType.ROLE_OPERATOR.getId(), RoleType.ROLE_ADMIN.getRole());
+        var initialRole = new Role(RoleType.ROLE_OPERATOR.getId(), RoleType.ROLE_OPERATOR.getRole());
         var user = User
                 .builder()
                 .firstName(request.getFirstName())

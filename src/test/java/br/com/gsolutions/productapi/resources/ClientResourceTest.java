@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -84,6 +85,9 @@ class ClientResourceTest {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.post(baseUrl)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .content(bodyJson)
         );
 
@@ -96,6 +100,9 @@ class ClientResourceTest {
     void deleteShouldReturnNoContent() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), existingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -105,6 +112,9 @@ class ClientResourceTest {
     void deleteShouldReturnNotFound() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), nonExistingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -114,6 +124,9 @@ class ClientResourceTest {
     void deleteShouldReturnBadRequest() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), dependentId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
         );
         actions.andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -124,6 +137,9 @@ class ClientResourceTest {
         String body = mapper.writeValueAsString(dto);
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.put(baseUrl.concat("/{id}"), existingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                         .accept(MediaType.APPLICATION_JSON)
@@ -140,6 +156,9 @@ class ClientResourceTest {
         String body = mapper.writeValueAsString(dto);
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.put(baseUrl.concat("/{id}"), nonExistingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                         .accept(MediaType.APPLICATION_JSON)
@@ -152,6 +171,9 @@ class ClientResourceTest {
     void getShouldReturnPage() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -162,6 +184,9 @@ class ClientResourceTest {
     void shouldReturnObjectDto() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl.concat("/{id}"), existingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isOk());
@@ -173,6 +198,9 @@ class ClientResourceTest {
     void shouldThrowsBadRequest() throws Exception {
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseUrl.concat("/{id}"), nonExistingId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
