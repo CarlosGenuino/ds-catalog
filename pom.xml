@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.3</version>
+		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.gsolutions</groupId>
@@ -63,11 +63,23 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>io.opentracing.contrib</groupId>-->
-<!--			<artifactId>opentracing-spring-jaeger-web-starter</artifactId>-->
-<!--			<version>3.2.2</version>-->
-<!--		</dependency>-->
+
+		<dependency>
+			<groupId>io.opentracing.contrib</groupId>
+			<artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jaegertracing</groupId>
+			<artifactId>jaeger-client</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentracing</groupId>
+			<artifactId>opentracing-api</artifactId>
+			<version>0.33.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -111,12 +123,15 @@
 
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<goals>
+					<goal>repackage</goal>
+				</goals>
 				<configuration>
-					<source>15</source>
-					<target>15</target>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<plugin>
