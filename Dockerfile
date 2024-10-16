@@ -19,6 +19,8 @@ WORKDIR /app
 
 # Copiando o arquivo JAR do estágio anterior
 COPY --from=build /app/target/*.jar /app/ds-catalog-0.0.1-SNAPSHOT.jar
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar /opentelemetry-javaagent.jar
 
 # Especificando o comando para executar o aplicativo
-ENTRYPOINT ["java", "-jar", "/app/ds-catalog-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT java -javaagent:/opentelemetry-javaagent.jar \
+           -jar /app/ds-catalog-0.0.1-SNAPSHOT.jar
