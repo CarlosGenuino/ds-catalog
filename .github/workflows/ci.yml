@@ -49,12 +49,12 @@ jobs:
 #          push: true
 #          tags: carlosgenuino/ds-catalog-api:${{ steps.generate_tag.output.sha }}, carlosgenuino/ds-catalog-api:latest
 
-      - name: Configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ''
-          aws-region: us-west-2
+#      - name: Configure aws credentials
+#        uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#          role-to-assume: ''
+#          aws-region: us-west-2
 
-      - name: Login ecr AWS
-        id: login_ecr
-        uses: aws-actions/amazon-ecr-login@v2
+ #     - name: Login ecr AWS
+ #       id: login_ecr
+ #       uses: aws-actions/amazon-ecr-login@v2
