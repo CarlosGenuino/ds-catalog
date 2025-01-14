@@ -24,14 +24,10 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token){
-//        return Jwts
-//                .parserBuilder()
-//                .setSigningKey(getSignInKey())
-//                .build()
-//                .parseClaimsJwt(token)
-//                .getBody();
-        return Jwts.parser()
+        return Jwts
+                .parserBuilder()
                 .setSigningKey(getSignInKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

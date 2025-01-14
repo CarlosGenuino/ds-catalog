@@ -36,6 +36,7 @@ public class Category implements Serializable {
 
     @Getter
     @ManyToMany(mappedBy = "categories")
+    @Builder.Default
     private Set<Product> products = new HashSet<>();
 
     public Category(CategoryDTO dto) {

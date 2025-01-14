@@ -46,6 +46,7 @@ public class Product implements Serializable {
     joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id"))
     @ManyToMany
+    @Builder.Default
     private Set<Category> categories = new HashSet<>();
 
     public Product(ProductDTO dto) {

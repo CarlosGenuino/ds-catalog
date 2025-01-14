@@ -29,6 +29,7 @@ public class UserUpdateValidor implements ConstraintValidator<UserUpdateValid, U
     public boolean isValid(UserUpdateDTO userUpdateDTO, ConstraintValidatorContext constraintValidatorContext) {
         List<ErrorMessage> errors = new ArrayList<>();
 
+        @SuppressWarnings("unchecked")
         Map<String, String> attribute = (Map<String, String>) request.getAttribute(URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         var strId = attribute.get("id");
         long userId = 0L;
