@@ -59,7 +59,7 @@ public class AuthenticationControllerTest {
         when(authService.authenticate(authRequest)).thenReturn(authResponse);
 
         // When / Then
-        mockMvc.perform(post("/api/v1/auth/authenticate")
+        mockMvc.perform(post("/auth/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authRequest)))
                 .andExpect(status().isOk())
