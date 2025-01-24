@@ -108,20 +108,20 @@ public class ProductServiceTests {
 
 
     @Test
-    public void sholdDoNothingWhenIdExist(){
+    public void shouldDoNothingWhenIdExist(){
         Assertions.assertDoesNotThrow(() -> service.delete(existingId));
         Mockito.verify(repository, Mockito.times(1)).deleteById(existingId);
     }
 
     @Test
-    public void sholdThowsExceptionWhenIdDoesExist(){
+    public void shouldThrowsExceptionWhenIdDoesExist(){
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.delete(nonExistId));
 
         Mockito.verify(repository, Mockito.times(1)).deleteById(nonExistId);
     }
 
     @Test
-    public void sholdThowsDataIntegrityViolationExceptionWhenIdDoesExist(){
+    public void shouldThrowsDataIntegrityViolationExceptionWhenIdDoesExist(){
         Assertions.assertThrows(DatabaseException.class, () -> service.delete(dependantId));
 
         Mockito.verify(repository, Mockito.times(1)).deleteById(dependantId);

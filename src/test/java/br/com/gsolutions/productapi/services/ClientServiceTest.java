@@ -80,8 +80,8 @@ class ClientServiceTest {
 
     @Test
     void whenSave(){
-        repository.save(client);
-        Assertions.assertEquals(client, client);
+        var client1 = repository.save(client);
+        Assertions.assertEquals(client, client1);
     }
 
     @Test

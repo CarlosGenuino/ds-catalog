@@ -81,8 +81,8 @@ public class CategoryServiceTests {
 
     @Test
     void whenSave(){
-        repository.save(category);
-        Assertions.assertEquals(category, category);
+        var category1 = repository.save(category);
+        Assertions.assertEquals(category, category1);
     }
 
     @Test

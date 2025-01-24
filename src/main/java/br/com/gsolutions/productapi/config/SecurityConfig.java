@@ -18,25 +18,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**", "/actuator").permitAll()
-                .requestMatchers(HttpMethod.GET, "/categories", "/products").permitAll()
-                .requestMatchers("/categories", "/products").hasAnyRole("OPERATOR", "ADMIN")
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(AbstractHttpConfigurer::disable) // Desabilita CSRF
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**", "/actuator").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categories", "/products").permitAll()
+                        .requestMatchers("/categories", "/products").hasAnyRole("OPERATOR", "ADMIN")
+                        .requestMatchers("/clients", "/users").hasRole("ADMIN")
+                        .anyRequest().denyAll()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
-

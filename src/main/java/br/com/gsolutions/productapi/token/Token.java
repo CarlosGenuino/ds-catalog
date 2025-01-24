@@ -32,4 +32,10 @@ public class Token {
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
+
+    public Token(String token, boolean revoked, boolean expired) {
+        this.token = token;
+        this.revoked = revoked;
+        this.expired = expired;
+    }
 }
