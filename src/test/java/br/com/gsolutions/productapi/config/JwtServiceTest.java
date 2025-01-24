@@ -26,7 +26,7 @@ class JwtServiceTest {
 
     @Mock
     private UserDetails userDetails;
-    private static final String EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTY5NzU2ODAwMCwiZXhwIjoxNjk3NjU0NDAwfQ.1Q2w3e4r5t6y7u8i9o0p";
+
     private static final String SECRET_KEY = "4D6251655468576D597133743677397A24432646294A404E635266556A586E32";
     @Test
     void testExtractUsername() {
