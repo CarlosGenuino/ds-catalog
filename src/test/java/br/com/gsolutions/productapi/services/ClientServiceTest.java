@@ -6,6 +6,7 @@ import br.com.gsolutions.productapi.factory.ClientFactory;
 import br.com.gsolutions.productapi.repositories.ClientRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,13 +111,13 @@ class ClientServiceTest {
 
 
     @Test
-    public void sholdDoNothingWhenIdExist(){
+    public void shouldDoNothingWhenIdExist(){
         Assertions.assertDoesNotThrow(() -> service.delete(existingId));
         Mockito.verify(repository, Mockito.times(1)).deleteById(existingId);
     }
 
     @Test
-    public void sholdThowsExceptionWhenIdDoesExist(){
+    public void shouldThrowsExceptionWhenIdDoesExist(){
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.delete(nonExistId));
 
         Mockito.verify(repository, Mockito.times(1)).deleteById(nonExistId);

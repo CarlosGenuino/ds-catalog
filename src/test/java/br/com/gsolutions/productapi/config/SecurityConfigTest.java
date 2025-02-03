@@ -22,7 +22,7 @@ public class SecurityConfigTest {
     private static final String categoryJson = """
         {
             "id": 1,
-            "nome": "Eletrônicos"
+            "name": "Eletrônicos"
         }
         """;
 
@@ -86,7 +86,7 @@ public class SecurityConfigTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser()
     public void testUnauthorizedAccess() throws Exception {
         mockMvc.perform(post("/categories").content(categoryJson))
                 .andExpect(status().isForbidden());

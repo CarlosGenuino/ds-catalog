@@ -101,6 +101,22 @@ public class CategoryResourceTests {
     }
 
     @Test
+    void postShouldReturnValidationError() throws Exception{
+        String bodyJson = mapper.writeValueAsString(new CategoryDTO());
+
+        ResultActions result = mockMvc.perform(
+                MockMvcRequestBuilders.post(baseUrl)
+                        .with(SecurityMockMvcRequestPostProcessors.user("maria@gmail.com")
+                                .roles("OPERATOR", "ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bodyJson)
+        );
+
+        result.andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+    }
+
+    @Test
     void deleteShouldReturnNoContent() throws Exception {
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.delete(baseUrl.concat("/{id}"), existingId)

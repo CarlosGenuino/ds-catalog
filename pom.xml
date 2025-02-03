@@ -20,7 +20,7 @@
 		<opentracing.version>3.2.2</opentracing.version> <!-- Versão do OpenTracing -->
 		<jaeger.version>1.6.0</jaeger.version> <!-- Versão do Jaeger -->
 		<lombok.version>1.18.30</lombok.version> <!-- Versão do Lombok -->
-		<jacoco.version>0.8.7</jacoco.version> <!-- Versão do JaCoCo -->
+		<jacoco.version>0.8.8</jacoco.version> <!-- Versão do JaCoCo -->
 	</properties>
 
 	<dependencies>
@@ -152,6 +152,11 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+			<version>5.2.1</version>
 		</dependency>
 	</dependencies>
 

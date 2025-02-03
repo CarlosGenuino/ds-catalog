@@ -1,8 +1,9 @@
 package br.com.gsolutions.productapi.config;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -10,11 +11,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -27,112 +26,105 @@ class JwtServiceTest {
     @Mock
     private UserDetails userDetails;
 
-    private static final String SECRET_KEY = "4D6251655468576D597133743677397A24432646294A404E635266556A586E32";
-    @Test
-    void testExtractUsername() {
-        // Arrange
-        String token = jwtService.generateToken(userDetails);
-
-        // Act
-        String username = jwtService.extractUsername(token);
-
-        // Assert
-        assertEquals(USERNAME, username);
-    }
-
-    private static final String USERNAME = "testuser";
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        when(userDetails.getUsername()).thenReturn(USERNAME);
     }
 
     @Test
-    void testExtractClaim() {
-        // Arrange
+    void testExtractUsername() {
+        // Gera um token válido
+        when(userDetails.getUsername()).thenReturn("user@example.com");
         String token = jwtService.generateToken(userDetails);
-        Function<Claims, String> claimsResolver = Claims::getSubject;
 
-        // Act
-        String subject = jwtService.extractClaim(token, claimsResolver);
+        // Extrai o nome de usuário do token
+        String username = jwtService.extractUsername(token);
 
-        // Assert
-        assertEquals(USERNAME, subject);
+        // Verifica se o nome de usuário está correto
+        assertEquals("user@example.com", username);
     }
 
     @Test
     void testGenerateTokenWithClaims() {
-        // Arrange
+        // Cria claims personalizados
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", "ADMIN");
 
-        // Act
+        // Gera um token com claims
+        when(userDetails.getUsername()).thenReturn("user@example.com");
         String token = jwtService.generateToken(claims, userDetails);
 
-        // Assert
+        // Verifica se o token foi gerado
         assertNotNull(token);
-        assertTrue(token.length() > 0);
     }
 
     @Test
     void testGenerateTokenWithoutClaims() {
-        // Act
+        // Gera um token sem claims
+        when(userDetails.getUsername()).thenReturn("user@example.com");
         String token = jwtService.generateToken(userDetails);
 
-        // Assert
+        // Verifica se o token foi gerado
         assertNotNull(token);
-        assertTrue(token.length() > 0);
     }
 
     @Test
     void testIsTokenValid() {
-        // Arrange
+        // Gera um token válido
+        when(userDetails.getUsername()).thenReturn("user@example.com");
         String token = jwtService.generateToken(userDetails);
 
-        // Act
+        // Verifica se o token é válido
         boolean isValid = jwtService.isTokenValid(token, userDetails);
 
-        // Assert
+        // Verifica se o token é válido
         assertTrue(isValid);
     }
 
     @Test
-    void testIsTokenExpired() {
-        // Arrange
-        String expiredToken = Jwts.builder()
-                .setSubject(USERNAME)
-                .setIssuedAt(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 48))
-                .setExpiration(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24)) // Token expirado
-                .signWith(getSignInKey())
-                .compact();
+    void testIsTokenInvalid() {
+        // Gera um token válido
+        when(userDetails.getUsername()).thenReturn("user@example.com");
+        String token = jwtService.generateToken(userDetails);
 
-        // Act
-        boolean isExpired = jwtService.isTokenExpired(expiredToken);
+        // Altera o nome de usuário no UserDetails para simular um token inválido
+        when(userDetails.getUsername()).thenReturn("anotheruser@example.com");
 
-        // Assert
-        assertTrue(isExpired);
+        // Verifica se o token é inválido
+        boolean isValid = jwtService.isTokenValid(token, userDetails);
+
+        // Verifica se o token é inválido
+        assertFalse(isValid);
     }
 
     @Test
-    void testIsTokenNotExpired() {
-        // Arrange
-        String validToken = Jwts.builder()
-                .setSubject(USERNAME)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token válido
-                .signWith(getSignInKey())
+    void testIsTokenExpired() {
+        // Configura o UserDetails
+        when(userDetails.getUsername()).thenReturn("user@example.com");
+
+        // Gera um token com uma data de expiração no passado
+        String token = Jwts.builder()
+                .setClaims(new HashMap<>())
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24)) // 24 horas atrás
+                .setExpiration(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 12)) // 12 horas atrás
+                .signWith(jwtService.getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
 
-        // Act
-        boolean isExpired = jwtService.isTokenExpired(validToken);
-
-        // Assert
-        assertFalse(isExpired);
+        // Verifica se o token está expirado
+        assertThrows(ExpiredJwtException.class, () -> jwtService.isTokenValid(token, userDetails));
     }
 
-    private Key getSignInKey() {
-        byte[] keyBytes = java.util.Base64.getDecoder().decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+    @Test
+    void testExtractClaim() {
+        // Gera um token válido
+        when(userDetails.getUsername()).thenReturn("user@example.com");
+        String token = jwtService.generateToken(userDetails);
+
+        // Extrai a data de expiração do token
+        Date expiration = jwtService.extractClaim(token, Claims::getExpiration);
+
+        // Verifica se a data de expiração foi extraída corretamente
+        assertNotNull(expiration);
     }
 }

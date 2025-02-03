@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
         User savedUser = new User();
         copyDataFromDTO(dto, savedUser);
         savedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
-        repository.save(savedUser);
+        savedUser = repository.save(savedUser);
         return new UserDTO(savedUser);
     }
 

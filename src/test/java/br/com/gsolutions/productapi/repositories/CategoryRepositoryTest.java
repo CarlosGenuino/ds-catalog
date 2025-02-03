@@ -70,9 +70,4 @@ public class CategoryRepositoryTest {
         Assertions.assertFalse(result.isPresent());
     }
 
-//    @Test
-//    public void shouldThrowEmptyResultDataAccessException(){
-//        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> repository.deleteById(notExistingId));
-//    }
-
 }

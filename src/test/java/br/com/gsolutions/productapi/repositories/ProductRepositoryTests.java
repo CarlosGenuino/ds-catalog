@@ -29,7 +29,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void sholdUpdateAndSaveAnObject(){
+    public void shouldUpdateAndSaveAnObject(){
         Optional<Product> optional = repository.findById(existingId);
         Assertions.assertTrue(optional.isPresent());
         Product product = optional.get();
@@ -39,13 +39,13 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void sholdFindAnObjectFromDatabase(){
+    public void shouldFindAnObjectFromDatabase(){
         Optional<Product> optional = repository.findById(existingId);
         Assertions.assertTrue(optional.isPresent());
     }
 
     @Test
-    public void sholdNotFindAnObjectFromDatabase(){
+    public void shouldNotFindAnObjectFromDatabase(){
         Optional<Product> optional = repository.findById(notExistingId);
         Assertions.assertFalse(optional.isPresent());
     }
@@ -59,14 +59,14 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void deleteSholdDeleteObjectWhenIdExists(){
+    public void deleteShouldDeleteObjectWhenIdExists(){
         repository.deleteById(existingId);
         Optional<Product> result = repository.findById(existingId);
         Assertions.assertFalse(result.isPresent());
     }
 
 //    @Test
-//    public void deleteSholdDeleteObjectWhenIdDoesNotExists(){
+//    public void deleteShouldDeleteObjectWhenIdDoesNotExists(){
 //        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
 //            repository.deleteById(notExistingId);
 //        });

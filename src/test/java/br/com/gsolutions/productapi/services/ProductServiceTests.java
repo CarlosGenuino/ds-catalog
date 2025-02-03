@@ -6,11 +6,15 @@ import br.com.gsolutions.productapi.factory.ProductFactory;
 import br.com.gsolutions.productapi.repositories.ProductRepository;
 import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
 import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -19,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +70,7 @@ public class ProductServiceTests {
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistId);
         Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependantId);
     }
+
 
     @Test
     void whenSave(){
