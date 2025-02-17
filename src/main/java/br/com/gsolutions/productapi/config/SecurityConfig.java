@@ -25,9 +25,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Desabilita CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/actuator", "/products/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/categories").permitAll()
-                        .requestMatchers("/categories").hasAnyRole("OPERATOR", "ADMIN")
+                        .requestMatchers("/auth/**", "/actuator").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categories", "/products/**").permitAll()
+                        .requestMatchers("/categories", "/products/**").hasAnyRole("OPERATOR", "ADMIN")
                         .requestMatchers("/clients", "/users").hasRole("ADMIN")
                         .anyRequest().denyAll()
                 )
