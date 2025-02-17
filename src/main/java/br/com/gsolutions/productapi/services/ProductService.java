@@ -1,9 +1,13 @@
 package br.com.gsolutions.productapi.services;
 
-import java.util.Optional;
-
+import br.com.gsolutions.productapi.dto.ProductDTO;
+import br.com.gsolutions.productapi.entities.Category;
+import br.com.gsolutions.productapi.entities.Product;
+import br.com.gsolutions.productapi.repositories.ProductRepository;
+import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
+import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -11,20 +15,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.gsolutions.productapi.dto.ProductDTO;
-import br.com.gsolutions.productapi.entities.Category;
-import br.com.gsolutions.productapi.entities.Product;
-import br.com.gsolutions.productapi.repositories.ProductRepository;
-import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
-import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
-import lombok.AllArgsConstructor;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class ProductService {
 
     private final ProductRepository repository;
-
+    private final S3Service s3Service;
     @Transactional(readOnly = true)
     public Page<ProductDTO> list(Pageable pageable){
         Page<Product> list = repository.findAll(pageable);
@@ -52,7 +50,7 @@ public class ProductService {
             Product entity = repository.getReferenceById(id);
             copyDataFromDTO(dto, entity);
             entity = repository.save(entity);
-            return new ProductDTO(entity);
+            return new ProductDTO(entity, entity.getCategories());
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Entity not Found by id: "+ id);
         }
@@ -77,5 +75,14 @@ public class ProductService {
         entity.setImgUrl(dto.getImgUrl());
         entity.getCategories().clear();
         dto.getCategories().forEach(categoryDTO -> entity.getCategories().add(new Category(categoryDTO)));
+    }
+
+    @Transactional
+    public ProductDTO uploadFile(Long id, String bucketName, String key, byte[] bytes) {
+        ProductDTO entity = this.findById(id);
+        String url = s3Service.uploadFile(bucketName, key, bytes);
+        entity.setImgUrl(url);
+        entity = this.update(id, entity);
+        return entity;
     }
 }

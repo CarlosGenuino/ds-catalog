@@ -1,11 +1,12 @@
 package br.com.gsolutions.productapi.entities;
 
 import br.com.gsolutions.productapi.dto.ProductDTO;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -19,10 +20,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Product implements Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5935703171790054007L;
+	@Serial
+    private static final long serialVersionUID = 5935703171790054007L;
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +35,7 @@ public class Product implements Serializable {
     @Positive
     private Double price;
 
+    @Column(length = 600)
     private String imgUrl;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

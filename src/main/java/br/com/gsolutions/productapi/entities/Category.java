@@ -1,9 +1,10 @@
 package br.com.gsolutions.productapi.entities;
 
 import br.com.gsolutions.productapi.dto.CategoryDTO;
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -21,7 +22,8 @@ public class Category implements Serializable {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 4416784870191430977L;
+	@Serial
+    private static final long serialVersionUID = 4416784870191430977L;
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

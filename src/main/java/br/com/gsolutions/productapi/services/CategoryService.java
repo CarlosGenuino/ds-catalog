@@ -1,8 +1,12 @@
 package br.com.gsolutions.productapi.services;
 
-import java.util.Optional;
-
+import br.com.gsolutions.productapi.dto.CategoryDTO;
+import br.com.gsolutions.productapi.entities.Category;
+import br.com.gsolutions.productapi.repositories.CategoryRepository;
+import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
+import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -10,12 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.gsolutions.productapi.dto.CategoryDTO;
-import br.com.gsolutions.productapi.entities.Category;
-import br.com.gsolutions.productapi.repositories.CategoryRepository;
-import br.com.gsolutions.productapi.services.exceptions.DatabaseException;
-import br.com.gsolutions.productapi.services.exceptions.ResourceNotFoundException;
-import lombok.AllArgsConstructor;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor

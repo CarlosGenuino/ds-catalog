@@ -5,10 +5,13 @@ import br.com.gsolutions.productapi.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -19,7 +22,7 @@ public class ProductResource {
     private final ProductService service;
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
+    public ResponseEntity<Page<ProductDTO>> findAll(@PageableDefault(size = 20) final Pageable pageable){
         return ResponseEntity.ok(service.list(pageable));
     }
 
@@ -46,5 +49,14 @@ public class ProductResource {
     public ResponseEntity<ProductDTO> delete(@PathVariable("id") Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @CrossOrigin("*")
+    @PostMapping(value = "/{id}/picture")
+    public ResponseEntity<ProductDTO> uploadFile(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+        String bucketName = "genuebooks";
+        String key = file.getOriginalFilename();
+        ProductDTO entity = service.uploadFile(id, bucketName, key, file.getBytes());
+        return ResponseEntity.ok(entity);
     }
 }

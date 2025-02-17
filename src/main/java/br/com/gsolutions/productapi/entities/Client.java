@@ -1,9 +1,9 @@
 package br.com.gsolutions.productapi.entities;
 
 import br.com.gsolutions.productapi.dto.ClientDTO;
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 
